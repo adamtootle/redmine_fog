@@ -36,8 +36,8 @@ module RedmineFog
         self.connection.directories.get @@fog_options[:rackspace_container]
       end
       
-      def move_to_fog_storage(filename, content)
-        file = self.directory.files.create :key => filename, :body => content
+      def move_to_fog_storage(filename, content, content_type='application/octet-stream')
+        file = self.directory.files.create :key => filename, :body => content, :content_type => content_type
       end
       
       def file_url(filename)

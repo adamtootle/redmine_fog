@@ -18,7 +18,7 @@ module RedmineFog
         if @temp_file
           self.disk_filename = Attachment.disk_filename(filename) if disk_filename.blank?
           content = @temp_file.respond_to?(:read) ? @temp_file.read : @temp_file
-          RedmineFog::Storage.move_to_fog_storage(self.disk_filename, content)
+          RedmineFog::Storage.move_to_fog_storage(self.disk_filename, content, self.content_type)
           md5 = Digest::MD5.new
           self.digest = md5.hexdigest
         end
