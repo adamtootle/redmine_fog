@@ -1,3 +1,5 @@
+require 'redmine_fog'
+
 Redmine::Plugin.register :redmine_fog do
   name 'Redmine Cloud Files'
   author 'Adam Tootle'
