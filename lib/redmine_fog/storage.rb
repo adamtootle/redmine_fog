@@ -25,7 +25,7 @@ module RedmineFog
       end
       
       def has_fog_options
-        @@fog_options[:rackspace_username] && @@fog_options[:rackspace_api_key] && @@fog_options[:rackspace_container]
+        @@fog_options[:rackspace_username] && @@fog_options[:rackspace_api_key] && @@fog_options[:rackspace_container] && @@fog_options[:rackspace_cdn_url]
       end
       
       def connection
@@ -36,6 +36,11 @@ module RedmineFog
         directory = self.connection.directories.get @@fog_options[:rackspace_container]
         file = directory.files.create :key => filename, :body => content
         puts file
+      end
+      
+      def file_url(filename)
+        load_options unless self.has_fog_options
+        "#{@@fog_options[:rackspace_cdn_url]}/#{filename}"
       end
     
     end
