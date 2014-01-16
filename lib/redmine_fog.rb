@@ -1,3 +1,3 @@
-require 'redmine_cloud_files/attachment_patch'
+require 'redmine_fog/attachment_patch'
 
-Attachment.send(:include, RedmineCloudFiles::AttachmentPatch)
+Attachment.send(:include, RedmineFog::AttachmentPatch)

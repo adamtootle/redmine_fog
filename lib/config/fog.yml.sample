@@ -1,0 +1,15 @@
+production:
+  provider:
+
+  # if provider == "Rackspace"
+  rackspace_username:
+  rackspace_api_key:
+  rackspace_container:
+
+development:
+  provider:
+
+  # if provider == "Rackspace"
+  rackspace_username:
+  rackspace_api_key:
+  rackspace_container:
