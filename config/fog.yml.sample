@@ -5,6 +5,8 @@ production:
   rackspace_username:
   rackspace_api_key:
   rackspace_container:
+  rackspace_region:
+  rackspace_cdn_url:
 
 development:
   provider:
@@ -13,3 +15,5 @@ development:
   rackspace_username:
   rackspace_api_key:
   rackspace_container:
+  rackspace_region:
+  rackspace_cdn_url:
