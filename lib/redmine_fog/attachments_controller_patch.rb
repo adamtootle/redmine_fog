@@ -16,12 +16,9 @@ module RedmineFog
 
     module InstanceMethods
       def download_from_fog_storage
-        puts "=============="
-        puts "download_from_fog_storage"
         if @attachment.container.is_a?(Version) || @attachment.container.is_a?(Project)
           @attachment.increment_download
         end
-        puts RedmineFog::Storage.file_url(@attachment.disk_filename)
         redirect_to(RedmineFog::Storage.file_url(@attachment.disk_filename))
       end
     end

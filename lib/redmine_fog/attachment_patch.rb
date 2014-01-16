@@ -7,7 +7,6 @@ module RedmineFog
       
       base.class_eval do
         unloadable # Send unloadable so it will not be unloaded in development
-        # attr_accessor :s3_access_key_id, :s3_secret_acces_key, :s3_bucket, :s3_bucket
         after_validation :move_to_fog_storage
         before_destroy   :delete_from_fog_storage
       end
@@ -29,7 +28,7 @@ module RedmineFog
       end
       
       def delete_from_fog_storage
-        # TODO: delete from fog storage
+        RedmineFog::Storage.delete_from_fog_storage self.disk_filename
       end
     end
   end

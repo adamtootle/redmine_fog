@@ -32,15 +32,22 @@ module RedmineFog
         @@connection || establish_connection
       end
       
+      def directory
+        self.connection.directories.get @@fog_options[:rackspace_container]
+      end
+      
       def move_to_fog_storage(filename, content)
-        directory = self.connection.directories.get @@fog_options[:rackspace_container]
-        file = directory.files.create :key => filename, :body => content
-        puts file
+        file = self.directory.files.create :key => filename, :body => content
       end
       
       def file_url(filename)
         load_options unless self.has_fog_options
         "#{@@fog_options[:rackspace_cdn_url]}/#{filename}"
+      end
+      
+      def delete_from_fog_storage(filename)
+        file = self.directory.files.create :key => filename
+        file.destroy
       end
     
     end
