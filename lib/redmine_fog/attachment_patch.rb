@@ -1,4 +1,4 @@
-require 'fog'
+require 'mimemagic'
 
 module RedmineFog
   module AttachmentPatch
@@ -9,6 +9,29 @@ module RedmineFog
         unloadable # Send unloadable so it will not be unloaded in development
         after_validation :move_to_fog_storage
         before_destroy   :delete_from_fog_storage
+        
+        class << self
+          alias_method :disk_filename_old, :disk_filename
+          def disk_filename(filename, directory=nil)
+            puts "======== filename = #{filename}"
+            timestamp = DateTime.now.strftime("%y%m%d%H%M%S")
+            ascii = ''
+            if filename =~ %r{^[a-zA-Z0-9_\.\-]*$}
+              ascii = filename
+              puts "ascii #1 = #{ascii}"
+            else
+              ascii = Digest::MD5.hexdigest(filename)
+              puts "ascii #2 = #{ascii}"
+              # keep the extension if any
+              ascii << $1 if filename =~ %r{(\.[a-zA-Z0-9]+)$}
+              puts "ascii #3 = #{ascii}"
+            end
+            while File.exist?(File.join(storage_path, directory.to_s, "#{timestamp}_#{ascii}"))
+              timestamp.succ!
+            end
+            "#{timestamp}_#{ascii}"
+          end
+        end
       end
     end
 
@@ -25,6 +48,8 @@ module RedmineFog
           if content_type.blank? && filename.present?
             self.content_type = Redmine::MimeType.of(filename)
           end
+          
+          self.content_type = MimeMagic.by_magic(@temp_file).to_s if content_type.blank?
           
           RedmineFog::Storage.move_to_fog_storage(self.disk_filename, content, self.content_type)
           md5 = Digest::MD5.new

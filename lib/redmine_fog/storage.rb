@@ -1,3 +1,5 @@
+require 'fog'
+
 module RedmineFog
   class Storage
   
